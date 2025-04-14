@@ -39,10 +39,17 @@ public class CompoundStatement implements Statement {
   public MIPSResult toMIPS(StringBuilder code, StringBuilder data, SymbolTable symbolTable, RegisterAllocator regAllocator){
     this.symbolTable = new SymbolTable();
     this.symbolTable.setParent(symbolTable);
-    int stackpointer = this.symbolTable.getSize();
-    this.symbolTable.addSymbol("return", new SymbolInfo("return", null, true));
+    int stackpointer = 0;
+    if(symbolTable.find("return") != null){
+      stackpointer += symbolTable.findOffset("return");
+    }
+    if(symbolTable.find("return") == null){
+      this.symbolTable.addSymbol("return", new SymbolInfo("return", null, true));
+      this.symbolTable.setOffset("return", 0);
+    }
     stackpointer += symbolTable.getSize();
-    this.symbolTable.getParent().incrementOffsetAll(-stackpointer);
+
+    this.symbolTable.getParent().incrementOffsetAll(stackpointer);
     code.append("addi $sp $sp -").append(stackpointer).append("\n");
 
     MIPSResult m = MIPSResult.createVoidResult();

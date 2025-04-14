@@ -39,7 +39,7 @@ public class Mutable implements Expression, Node {
   public MIPSResult toMIPS(StringBuilder code, StringBuilder data, SymbolTable symbolTable, RegisterAllocator regAllocator){
     String reg2 = regAllocator.getAny();
     String reg3 = regAllocator.getAny();
-    code.append(String.format("li %s %d\n", reg3, symbolTable.findOffset(id)));
+    code.append(String.format("li %s %d\n", reg3, -symbolTable.findOffset(id)));
     code.append(String.format("add %s %s $sp\n", reg3, reg3));
     code.append(String.format("lw %s %d(%s)\n", reg2, 0, reg3));
     regAllocator.clear(reg3);

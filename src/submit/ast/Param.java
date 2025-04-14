@@ -6,6 +6,7 @@ package submit.ast;
 
 import submit.MIPSResult;
 import submit.RegisterAllocator;
+import submit.SymbolInfo;
 import submit.SymbolTable;
 
 /**
@@ -45,6 +46,7 @@ public class Param implements Node {
   }
   @Override
   public MIPSResult toMIPS(StringBuilder code, StringBuilder data, SymbolTable symbolTable, RegisterAllocator regAllocator){
+    symbolTable.addSymbol(id, new SymbolInfo(id, type, false));
     return MIPSResult.createVoidResult();
   }
 

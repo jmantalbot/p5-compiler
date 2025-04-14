@@ -46,10 +46,10 @@ li $v0 4
 syscall
 move $t0 $ra
 sw $t0 -12($sp)
-add $sp $sp -8
+add $sp $sp -12
 jal foo
-add $sp $sp 8
-lw $t0 -8($sp)
+add $sp $sp 12
+lw $t0 -12($sp)
 move $ra $t0
 addi $sp $sp 0
 jr $ra
@@ -64,17 +64,17 @@ li $v0 4
 syscall
 move $t0 $ra
 sw $t0 -4($sp)
-add $sp $sp -0
+add $sp $sp -4
 jal foo
-add $sp $sp 0
-lw $t0 -0($sp)
+add $sp $sp 4
+lw $t0 -4($sp)
 move $ra $t0
 move $t0 $ra
 sw $t0 -4($sp)
-add $sp $sp -0
+add $sp $sp -4
 jal fum
-add $sp $sp 0
-lw $t0 -0($sp)
+add $sp $sp 4
+lw $t0 -4($sp)
 move $ra $t0
 addi $sp $sp 0
 li $v0 10

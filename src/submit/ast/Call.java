@@ -76,44 +76,50 @@ public class Call implements Expression {
 
 
     } else {
+      int stack = symbolTable.getSize();
       String reg = regAllocator.getAny();
       code.append(String.format("move %s $ra\n", reg));
-      code.append(String.format("sw %s %d($sp)\n", reg, -(symbolTable.getSize() + 4)));
+      regAllocator.clear(reg);
+      stack += 4;
+      code.append(String.format("sw %s %d($sp)\n", reg, -(stack)));
       for (Expression arg : args) {
         String reg2 = regAllocator.getAny();
         if (arg instanceof NumConstant){
           symbolTable.addSymbol(arg.toString(), new SymbolInfo(arg.toString(), VarType.INT, false));
           regAllocator.clear(reg2);
           reg2 = arg.toMIPS(code, data, symbolTable, regAllocator).getRegister();
-          code.append(String.format("sw %s -%d($sp)\n", reg2, symbolTable.getSize() + 4));
+          stack +=4;
+          code.append(String.format("sw %s -%d($sp)\n", reg2, stack));
           regAllocator.clear(reg2);
         }
         else if (arg instanceof Mutable){
-          symbolTable.addSymbol(arg.toString(), new SymbolInfo(arg.toString(), VarType.INT, false));
           reg2 = arg.toMIPS(code, data, symbolTable, regAllocator).getRegister();
-          symbolTable.setSize(symbolTable.getSize() + symbolTable.getTypeSize(VarType.INT));
-          code.append(String.format("sw %s -%d($sp)\n", reg2, symbolTable.getSize() + 4));
+          stack += 4;
+          code.append(String.format("sw %s -%d($sp)\n", reg2, stack - args.size() * symbolTable.getTypeSize(VarType.INT)));
           regAllocator.clear(reg2);
         } else if (arg instanceof Call){
           regAllocator.clear(reg2);
+          stack -= args.size();
           arg.toMIPS(code, data, symbolTable, regAllocator);
+          stack += args.size();
         }
       }
       regAllocator.clearAll();
 
 
-      code.append(String.format("add $sp $sp -%s\n", symbolTable.getSize()));
+      code.append(String.format("add $sp $sp -%s\n", stack - args.size() * symbolTable.getTypeSize(VarType.INT)));
       code.append(String.format("jal %s\n", id));
-      code.append(String.format("add $sp $sp %s\n", symbolTable.getSize()));
-      code.append(String.format("lw %s -%d($sp)\n", reg, symbolTable.getSize()));
+      code.append(String.format("add $sp $sp %s\n", stack - args.size() * symbolTable.getTypeSize(VarType.INT)));
+      code.append(String.format("lw %s -%d($sp)\n", reg, stack - args.size() * symbolTable.getTypeSize(VarType.INT)));
       code.append(String.format("move $ra %s\n", reg));
+      regAllocator.clearAll();
 
       if (symbolTable.getThisOffset("return")){
         reg = regAllocator.getAny();
-        code.append(String.format("lw %s -%d($sp)\n", reg, symbolTable.getSize() + args.size() * symbolTable.getTypeSize(VarType.INT)));
+        code.append(String.format("lw %s -%d($sp)\n", reg, stack));
       }
 
-      regAllocator.clear(reg);
+      regAllocator.clearAll();
     }
     return MIPSResult.createVoidResult();
   }
