@@ -41,15 +41,15 @@ public class CompoundStatement implements Statement {
     this.symbolTable.setParent(symbolTable);
     int stackpointer = 0;
     if(symbolTable.find("return") != null){
-      stackpointer += symbolTable.findOffset("return");
+      stackpointer -= symbolTable.findOffset("return");
     }
     if(symbolTable.find("return") == null){
       this.symbolTable.addSymbol("return", new SymbolInfo("return", null, true));
       this.symbolTable.setOffset("return", 0);
     }
     stackpointer += symbolTable.getSize();
-    this.symbolTable.getParent().incrementOffsetAll(stackpointer);
-    code.append("addi $sp $sp -").append(stackpointer).append("\n");
+    this.symbolTable.getParent().incrementOffsetAll(-stackpointer);
+    code.append("addi $sp $sp ").append(-stackpointer).append("\n");
 
     MIPSResult m = MIPSResult.createVoidResult();
     for (Statement statement : statements) {

@@ -8,7 +8,7 @@
 j main
 
 foo:
-addi $sp $sp -0
+addi $sp $sp 0
 li $t0 7
 move $a0 $t0
 li $v0 1
@@ -20,7 +20,7 @@ addi $sp $sp 0
 jr $ra
 
 fum:
-addi $sp $sp -0
+addi $sp $sp 0
 li $t0 -4
 add $t0 $t0 $sp
 li $t1 9
@@ -55,7 +55,7 @@ addi $sp $sp 0
 jr $ra
 
 main:
-addi $sp $sp -0
+addi $sp $sp 0
 la $a0 datalabel0
 li $v0 4
 syscall

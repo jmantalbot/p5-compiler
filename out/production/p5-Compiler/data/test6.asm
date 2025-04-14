@@ -8,11 +8,11 @@
 j main
 
 add:
-addi $sp $sp -0
-li $t1 -4
+addi $sp $sp -16
+li $t1 12
 add $t1 $t1 $sp
 lw $t0 0($t1)
-li $t2 -8
+li $t2 8
 add $t2 $t2 $sp
 lw $t1 0($t2)
 add $t0 $t0 $t1
@@ -22,11 +22,11 @@ syscall
 la $a0 newline
 li $v0 4
 syscall
-addi $sp $sp 0
+addi $sp $sp 16
 jr $ra
 
 main:
-addi $sp $sp -0
+addi $sp $sp -16
 la $a0 datalabel0
 li $v0 4
 syscall
@@ -67,7 +67,7 @@ jal add
 add $sp $sp 12
 lw $t0 -12($sp)
 move $ra $t0
-addi $sp $sp 0
+addi $sp $sp 16
 li $v0 10
 syscall
 

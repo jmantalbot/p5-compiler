@@ -8,7 +8,7 @@
 j main
 
 main:
-addi $sp $sp -0
+addi $sp $sp 0
 la $a0 datalabel0
 li $v0 4
 syscall
@@ -41,43 +41,43 @@ syscall
 la $a0 newline
 li $v0 4
 syscall
-addi $sp $sp -4
-li $t1 -4
-add $t1 $t1 $sp
-li $t2 9
-sw $t2 0($t1)
-li $t1 0
-add $t1 $t1 $sp
-li $t3 2
-sub $t3 $zero $t3
-sw $t3 0($t1)
-li $t3 0
+addi $sp $sp 4
+li $t0 -4
+add $t0 $t0 $sp
+li $t1 9
+sw $t1 0($t0)
+li $t0 -8
+add $t0 $t0 $sp
+li $t2 2
+sub $t2 $zero $t2
+sw $t2 0($t0)
+li $t2 -8
+add $t2 $t2 $sp
+lw $t0 0($t2)
+li $t3 -4
 add $t3 $t3 $sp
-lw $t1 0($t3)
-li $t4 -4
-add $t4 $t4 $sp
-lw $t3 0($t4)
-add $t1 $t1 $t3
-move $a0 $t1
+lw $t2 0($t3)
+add $t0 $t0 $t2
+move $a0 $t0
 li $v0 1
 syscall
 la $a0 newline
 li $v0 4
 syscall
-addi $sp $sp 4
-li $t3 0
-add $t3 $t3 $sp
-li $t4 4
-sw $t4 0($t3)
+addi $sp $sp -4
+li $t0 0
+add $t0 $t0 $sp
+li $t2 4
+sw $t2 0($t0)
 addi $sp $sp 8
-li $t4 -4
-add $t4 $t4 $sp
-lw $t3 0($t4)
-li $t5 -8
-add $t5 $t5 $sp
-lw $t4 0($t5)
-add $t3 $t3 $t4
-move $a0 $t3
+li $t2 -4
+add $t2 $t2 $sp
+lw $t0 0($t2)
+li $t3 -8
+add $t3 $t3 $sp
+lw $t2 0($t3)
+add $t0 $t0 $t2
+move $a0 $t0
 li $v0 1
 syscall
 la $a0 newline
