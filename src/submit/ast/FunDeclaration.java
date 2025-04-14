@@ -63,6 +63,7 @@ public class FunDeclaration implements Declaration, Node {
     if (!Objects.equals(id, "main")){
       code.append("jr $ra\n");
     }
+    regAllocator.clearAll();
     return MIPSResult.createVoidResult();
   }
 }

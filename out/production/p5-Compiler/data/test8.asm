@@ -8,7 +8,7 @@
 j main
 
 add:
-addi $sp $sp -0
+addi $sp $sp 0
 li $t1 -4
 add $t1 $t1 $sp
 lw $t0 0($t1)
@@ -22,16 +22,16 @@ addi $sp $sp 0
 jr $ra
 
 add2:
-addi $sp $sp -0
+addi $sp $sp 0
 move $t0 $ra
 sw $t0 -16($sp)
 move $t1 $ra
 sw $t1 -16($sp)
-li $t3 -8
+li $t3 -4
 add $t3 $t3 $sp
 lw $t2 0($t3)
 sw $t2 -20($sp)
-li $t3 -12
+li $t3 -8
 add $t3 $t3 $sp
 lw $t2 0($t3)
 sw $t2 -24($sp)
@@ -40,19 +40,21 @@ jal add
 add $sp $sp 16
 lw $t1 -16($sp)
 move $ra $t1
-li $t0 1
-sw $t0 -20($sp)
+lw $t0 -28($sp)
+li $t1 1
+sw $t1 -24($sp)
 add $sp $sp -16
 jal add
 add $sp $sp 16
 lw $t0 -16($sp)
 move $ra $t0
+lw $t0 -28($sp)
 jr $ra
 addi $sp $sp 0
 jr $ra
 
 main:
-addi $sp $sp -0
+addi $sp $sp 0
 la $a0 datalabel0
 li $v0 4
 syscall
@@ -62,14 +64,15 @@ syscall
 move $t0 $ra
 sw $t0 -16($sp)
 li $t1 2
-sw $t1 -16($sp)
-li $t1 4
 sw $t1 -20($sp)
+li $t1 4
+sw $t1 -24($sp)
 add $sp $sp -16
 jal add2
 add $sp $sp 16
 lw $t0 -16($sp)
 move $ra $t0
+lw $t0 -28($sp)
 move $a0 $t0
 li $v0 1
 syscall

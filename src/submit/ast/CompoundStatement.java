@@ -47,7 +47,7 @@ public class CompoundStatement implements Statement {
       this.symbolTable.addSymbol("return", new SymbolInfo("return", null, true));
       this.symbolTable.setOffset("return", 0);
     }
-    stackpointer += symbolTable.getSize();
+    stackpointer -= symbolTable.getSize();
     this.symbolTable.getParent().incrementOffsetAll(-stackpointer);
     code.append("addi $sp $sp ").append(-stackpointer).append("\n");
 
@@ -58,6 +58,7 @@ public class CompoundStatement implements Statement {
 
     code.append("addi $sp $sp ").append(stackpointer).append("\n");
     this.symbolTable.getParent().incrementOffsetAll(stackpointer);
+    regAllocator.clearAll();
     return m;
   }
 }

@@ -64,8 +64,7 @@ public class Call implements Expression {
           regAllocator.clear(reg);
         }
         if (args.getFirst() instanceof Call){
-          String reg = regAllocator.getAny();
-          args.getFirst().toMIPS(code, data, symbolTable, regAllocator).getRegister();
+          String reg = args.getFirst().toMIPS(code, data, symbolTable, regAllocator).getRegister();
           code.append(String.format("move $a0 %s\nli $v0 1\nsyscall\n", reg));
           regAllocator.clear(reg);
         }
@@ -111,7 +110,7 @@ public class Call implements Expression {
       VarType type = symbolTable.find(id).getType();
       if (type != VarType.VOID && type != null){
          reg = regAllocator.getAny();
-        code.append(String.format("lw %s -%d($sp)\n", reg, stack));
+        code.append(String.format("lw %s %d($sp)\n", reg, -(stack + symbolTable.getTypeSize(type))));
         return MIPSResult.createRegisterResult(reg, type);
       }
     }

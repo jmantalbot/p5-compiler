@@ -40,6 +40,7 @@ public class Program implements Node {
   public MIPSResult toMIPS(StringBuilder code, StringBuilder data, SymbolTable symbolTable, RegisterAllocator regAllocator){
     for (Declaration declaration : declarations) {
       declaration.toMIPS(code, data, symbolTable, regAllocator);
+      regAllocator.clearAll();
     }
     return MIPSResult.createVoidResult();
   }
