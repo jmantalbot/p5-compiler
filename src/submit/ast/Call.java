@@ -79,14 +79,11 @@ public class Call implements Expression {
       int stack = symbolTable.getSize();
       String reg = regAllocator.getAny();
       code.append(String.format("move %s $ra\n", reg));
-      regAllocator.clear(reg);
       stack += 4;
       code.append(String.format("sw %s %d($sp)\n", reg, -(stack)));
       for (Expression arg : args) {
-        String reg2 = regAllocator.getAny();
+        String reg2 = "";
         if (arg instanceof NumConstant){
-          symbolTable.addSymbol(arg.toString(), new SymbolInfo(arg.toString(), VarType.INT, false));
-          regAllocator.clear(reg2);
           reg2 = arg.toMIPS(code, data, symbolTable, regAllocator).getRegister();
           stack +=4;
           code.append(String.format("sw %s -%d($sp)\n", reg2, stack));
@@ -95,13 +92,10 @@ public class Call implements Expression {
         else if (arg instanceof Mutable){
           reg2 = arg.toMIPS(code, data, symbolTable, regAllocator).getRegister();
           stack += 4;
-          code.append(String.format("sw %s -%d($sp)\n", reg2, stack - args.size() * symbolTable.getTypeSize(VarType.INT)));
+          code.append(String.format("sw %s -%d($sp)\n", reg2, stack));
           regAllocator.clear(reg2);
         } else if (arg instanceof Call){
-          regAllocator.clear(reg2);
-          stack -= args.size();
           arg.toMIPS(code, data, symbolTable, regAllocator);
-          stack += args.size();
         }
       }
       regAllocator.clearAll();
@@ -114,12 +108,12 @@ public class Call implements Expression {
       code.append(String.format("move $ra %s\n", reg));
       regAllocator.clearAll();
 
-      if (symbolTable.getThisOffset("return")){
-        reg = regAllocator.getAny();
+      VarType type = symbolTable.find(id).getType();
+      if (type != VarType.VOID && type != null){
+         reg = regAllocator.getAny();
         code.append(String.format("lw %s -%d($sp)\n", reg, stack));
+        return MIPSResult.createRegisterResult(reg, type);
       }
-
-      regAllocator.clearAll();
     }
     return MIPSResult.createVoidResult();
   }

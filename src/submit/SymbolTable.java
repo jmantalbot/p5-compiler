@@ -121,7 +121,7 @@ public class SymbolTable {
       }
     }
     if (t_offset == -1) return 0;
-    return -t_offset;
+    return t_offset;
   }
 
   public void incrementOffset(String id, Integer decrement) {

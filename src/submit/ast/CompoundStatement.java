@@ -48,7 +48,6 @@ public class CompoundStatement implements Statement {
       this.symbolTable.setOffset("return", 0);
     }
     stackpointer += symbolTable.getSize();
-
     this.symbolTable.getParent().incrementOffsetAll(stackpointer);
     code.append("addi $sp $sp -").append(stackpointer).append("\n");
 
