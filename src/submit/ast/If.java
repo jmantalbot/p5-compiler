@@ -47,6 +47,11 @@ public class If implements Statement {
   }
   @Override
   public MIPSResult toMIPS(StringBuilder code, StringBuilder data, SymbolTable symbolTable, RegisterAllocator regAllocator){
+    if (expression instanceof BinaryOperator) {
+      String reg = expression.toMIPS(code, data, symbolTable, regAllocator).getRegister();
+    }
+
+
     return MIPSResult.createVoidResult();
   }
 }

@@ -4,10 +4,7 @@
  */
 package submit.ast;
 
-import submit.MIPSResult;
-import submit.RegisterAllocator;
-import submit.SymbolInfo;
-import submit.SymbolTable;
+import submit.*;
 
 import java.util.Objects;
 
@@ -80,6 +77,51 @@ public class BinaryOperator implements Expression {
       code.append(String.format("div %s %s\nmflo %s\n", reg1, reg2, reg1));
       regAllocator.clear(reg2);
     }
+    else if (type.equals(BinaryOperatorType.LT)){
+      String address = StringLabelGenerator.getLabel();
+      code.append(String.format("slt %s %s %s\n", reg1, reg1, reg2));
+      code.append(String.format("subi %s %s %d\n", reg1, reg1, 1));
+      code.append(String.format("bne %s $zero %s\n", reg1, address));
+      regAllocator.clear(reg2);
+      regAllocator.clear(reg1);
+      return MIPSResult.createAddressResult(address, VarType.VOID);
+    }
+    else if (type.equals(BinaryOperatorType.GT)){
+      String address = StringLabelGenerator.getLabel();
+      code.append(String.format("slt %s %s %s\n", reg1, reg2, reg1));
+      code.append(String.format("subi %s %s %d\n", reg1, reg1, 1));
+      code.append(String.format("bne %s $zero %s\n", reg1, address));
+      regAllocator.clear(reg2);
+      regAllocator.clear(reg1);
+      return MIPSResult.createAddressResult(address, VarType.VOID);
+    }
+    else if (type.equals(BinaryOperatorType.LE)){
+      String address = StringLabelGenerator.getLabel();
+      code.append(String.format("slt %s %s %s\n", reg1, reg2, reg1));
+      code.append(String.format("bne %s $zero %s\n", reg1, address));
+      regAllocator.clear(reg2);
+      regAllocator.clear(reg1);
+      return MIPSResult.createAddressResult(address, VarType.VOID);
+    }
+
+    else if (type.equals(BinaryOperatorType.EQ)){
+      String address = StringLabelGenerator.getLabel();
+      code.append(String.format("sub %s %s %s\n", reg1, reg1, reg2));
+      code.append(String.format("bne %s $zero %s\n", reg1, address));
+      regAllocator.clear(reg2);
+      regAllocator.clear(reg1);
+      return MIPSResult.createAddressResult(address, VarType.VOID);
+    }
+    else if (type.equals(BinaryOperatorType.GE)){
+      String address = StringLabelGenerator.getLabel();
+      code.append(String.format("slt %s %s %s\n", reg1, reg1, reg2));
+      code.append(String.format("bne %s $zero %s\n", reg1, address));
+      regAllocator.clear(reg2);
+      regAllocator.clear(reg1);
+      return MIPSResult.createAddressResult(address, VarType.VOID);
+    }
+
+
     return MIPSResult.createRegisterResult(reg1, VarType.INT);
   }
 
