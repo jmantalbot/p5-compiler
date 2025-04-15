@@ -51,6 +51,7 @@ public class Assignment implements Expression, Node {
       regAllocator.clear(reg3);
     }
     else if (rhs instanceof UnaryOperator) {
+      regAllocator.clear(reg2);
       reg2 = rhs.toMIPS(code, data, symbolTable, regAllocator).getRegister();
     }
     code.append(String.format("sw %s %d(%s)\n", reg2, 0, reg1));

@@ -74,7 +74,7 @@ public class Call implements Expression {
 
 
 
-    } else {
+    } else { // if the call isn't for println
       int stack = symbolTable.getSize();
       String reg = regAllocator.getAny();
       code.append(String.format("move %s $ra\n", reg));

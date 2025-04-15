@@ -25,34 +25,40 @@ lw $t0 0($t1)
 li $t1 4
 slt $t0 $t0 $t1
 subi $t0 $t0 1
-bne $t0 $zero datalabel1li $t1 -4
+bne $t0 $zero datalabel1
+li $t1 -4
 add $t1 $t1 $sp
 lw $t0 0($t1)
 li $t1 4
 slt $t0 $t1 $t0
 subi $t0 $t0 1
-bne $t0 $zero datalabel2li $t1 -4
+bne $t0 $zero datalabel2
+li $t1 -4
 add $t1 $t1 $sp
 lw $t0 0($t1)
 li $t1 4
 slt $t0 $t1 $t0
 subi $t0 $t0 1
-bne $t0 $zero datalabel3li $t1 -4
+bne $t0 $zero datalabel3
+li $t1 -4
 add $t1 $t1 $sp
 lw $t0 0($t1)
 li $t1 3
 slt $t0 $t1 $t0
-bne $t0 $zero datalabel4li $t1 -4
+bne $t0 $zero datalabel4
+li $t1 -4
 add $t1 $t1 $sp
 lw $t0 0($t1)
 li $t1 3
 sub $t0 $t0 $t1
-bne $t0 $zero datalabel5li $t1 -4
+bne $t0 $zero datalabel5
+li $t1 -4
 add $t1 $t1 $sp
 lw $t0 0($t1)
 li $t1 4
 slt $t0 $t0 $t1
-bne $t0 $zero datalabel6addi $sp $sp 0
+bne $t0 $zero datalabel6
+addi $sp $sp 0
 li $v0 10
 syscall
 

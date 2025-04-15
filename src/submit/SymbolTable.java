@@ -68,6 +68,15 @@ public class SymbolTable {
     return null;
   }
 
+  public boolean removeSymbol(String id) {
+    if (table.containsKey(id) && offset.containsKey(id)) {
+      table.remove(id);
+      offset.remove(id);
+      return true;
+    }
+    return false;
+  }
+
   public HashMap<String, SymbolInfo> getSymbolTable() {
     return table;
   }
@@ -107,6 +116,15 @@ public class SymbolTable {
   public void setOffset(String id, Integer offset) {
     this.offset.remove(id);
     this.offset.put(id, offset);
+  }
+
+  public Integer getTotalSize(){
+    Integer totalSize = 0;
+    totalSize += getSize();
+    if (parent != null) {
+      totalSize += parent.getTotalSize();
+    }
+    return totalSize;
   }
 
 

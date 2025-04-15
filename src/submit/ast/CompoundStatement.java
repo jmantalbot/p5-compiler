@@ -40,24 +40,33 @@ public class CompoundStatement implements Statement {
     this.symbolTable = new SymbolTable();
     this.symbolTable.setParent(symbolTable);
     int stackpointer = 0;
-    if(symbolTable.find("return") != null){
-      stackpointer -= symbolTable.findOffset("return");
+    if(!(symbolTable.find("1") == null) && symbolTable.find("1").getType() == VarType.VOID){
+      stackpointer -= symbolTable.getSize();
+    } else {
+      boolean c = symbolTable.removeSymbol("0");
+      if(!c) System.out.println("Compound block was accessed when it wasn't supposed to be.");
     }
     if(symbolTable.find("return") == null){
       this.symbolTable.addSymbol("return", new SymbolInfo("return", null, true));
       this.symbolTable.setOffset("return", 0);
     }
-    stackpointer -= symbolTable.getSize();
-    this.symbolTable.getParent().incrementOffsetAll(-stackpointer);
+    stackpointer += this.symbolTable.getParent().getSize() - this.symbolTable.getSize();
+
+
+    symbolTable.incrementOffsetAll(-stackpointer);
     code.append("addi $sp $sp ").append(-stackpointer).append("\n");
 
     MIPSResult m = MIPSResult.createVoidResult();
     for (Statement statement : statements) {
+      if (statement instanceof CompoundStatement) {
+        this.symbolTable.addSymbol("0", new SymbolInfo("0", VarType.VOID, false));
+      }
+
       m = statement.toMIPS(code, data, this.symbolTable, regAllocator);
     }
 
     code.append("addi $sp $sp ").append(stackpointer).append("\n");
-    this.symbolTable.getParent().incrementOffsetAll(stackpointer);
+    symbolTable.incrementOffsetAll(stackpointer);
     regAllocator.clearAll();
     return m;
   }
