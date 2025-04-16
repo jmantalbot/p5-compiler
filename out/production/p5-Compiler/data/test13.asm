@@ -79,8 +79,8 @@ li $t3 -44
 add $t3 $t3 $sp
 lw $t2 0($t3)
 li $t3 4
-mul $t1 $t1 $t2
-add $t0 $t0 $t1
+mul $t2 $t2 $t3
+add $t1 $t1 $t2
 lw $t0 0($t1)
 move $a0 $t0
 li $v0 1
