@@ -41,9 +41,9 @@ li $t0 0
 add $t0 $t0 $sp
 li $t2 0
 add $t2 $t2 $sp
-lw $t0 0($t2)
+lw $t1 0($t2)
 li $t2 1
-add $t0 $t0 $t2
+add $t1 $t1 $t2
 sw $t1 0($t0)
 addi $sp $sp 4
 j datalabel1

@@ -52,8 +52,11 @@ public class FunDeclaration implements Declaration, Node {
   @Override
   public MIPSResult toMIPS(StringBuilder code, StringBuilder data, SymbolTable symbolTable, RegisterAllocator regAllocator){
     code.append("\n").append(id).append(":\n");
-    if (!params.isEmpty()) symbolTable.addSymbol("1", new SymbolInfo(String.valueOf(params.size()), VarType.VOID, false));
-    if (params.isEmpty()) symbolTable.addSymbol("0", new SymbolInfo("0", VarType.VOID, false));
+    if (!params.isEmpty()) symbolTable.addSymbol("1", new SymbolInfo(String.valueOf(params.size()), VarType.VOID, false, 0), 0);
+    if (params.isEmpty()) symbolTable.addSymbol("0", new SymbolInfo("0", VarType.VOID, false, 0), 0);
+    for (Param param : params) {
+      param.toMIPS(code, data, symbolTable, regAllocator);
+    }
     statement.toMIPS(code, data, symbolTable, regAllocator);
     if (Objects.equals(id, "main")){
       code.append("li $v0 10\nsyscall\n");

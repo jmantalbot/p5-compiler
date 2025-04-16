@@ -38,12 +38,12 @@ public class Return implements Statement {
     String reg = regAllocator.getAny();
     String reg2 = regAllocator.getAny();
     if (expr instanceof NumConstant){
-      symbolTable.addSymbol(expr.toString(), new SymbolInfo(expr.toString(), VarType.INT, false));
       reg = expr.toMIPS(code, data, symbolTable, regAllocator).getRegister();
       code.append(String.format("sw %s -%d($sp)\n", reg, symbolTable.getSize()));
       regAllocator.clear(reg);
     } else if (expr instanceof Mutable){
-      symbolTable.addSymbol(expr.toString(), new SymbolInfo(expr.toString(), VarType.INT, false));
+      int arraySize = ((Mutable) expr).getIndex();
+      symbolTable.addSymbol(expr.toString(), new SymbolInfo(expr.toString(), VarType.INT, false, arraySize), arraySize);
       code.append(String.format("li %s %d\n", reg2, symbolTable.findOffset(expr.toString())));
       code.append(String.format("add %s %s $sp\n", reg2, reg2));
       code.append(String.format("lw %s 0(%s)\n", reg, reg2));

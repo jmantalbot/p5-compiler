@@ -18,16 +18,16 @@ public class SymbolTable {
     table = new HashMap<>();
     parent = null;
     children = new ArrayList<>();
-    table.put("println", new SymbolInfo("println", VarType.VOID, true));
+    table.put("println", new SymbolInfo("println", VarType.VOID, true, 0));
     size = 0;
     offset = new HashMap<>();
   }
 
-  public void addSymbol(String id, SymbolInfo symbol) {
+  public void addSymbol(String id, SymbolInfo symbol, int arraySize) {
     if (!table.containsKey(id)) {
       table.put(id, symbol);
       if (!symbol.isFunction()) {
-        size += getTypeSize(symbol.getType());
+        size += getTypeSize(symbol.getType()) * arraySize;
       }
       if (!symbol.isFunction()){
         offset.put(id, size);

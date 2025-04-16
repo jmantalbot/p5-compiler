@@ -46,7 +46,7 @@ public class Param implements Node {
   }
   @Override
   public MIPSResult toMIPS(StringBuilder code, StringBuilder data, SymbolTable symbolTable, RegisterAllocator regAllocator){
-    symbolTable.addSymbol(id, new SymbolInfo(id, type, false));
+    symbolTable.addSymbol(id, new SymbolInfo(id, type, false, 1), 1);
     return MIPSResult.createVoidResult();
   }
 

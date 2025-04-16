@@ -40,7 +40,7 @@ public class While implements Statement {
       addr2 = expression.toMIPS(code, data, symbolTable, regAllocator).getAddress();
     }
     if (statement instanceof CompoundStatement) {
-      symbolTable.addSymbol("0", new SymbolInfo("0", VarType.VOID, false));
+      symbolTable.addSymbol("0", new SymbolInfo("0", VarType.VOID, false, 0), 0);
     }
     statement.toMIPS(code, data, symbolTable, regAllocator);
     code.append(String.format("j %s\n", addr));

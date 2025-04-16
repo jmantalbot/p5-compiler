@@ -41,7 +41,7 @@ public class ASTVisitor extends CminusBaseVisitor<Node> {
         for (CminusParser.VarDeclIdContext v : ctx.varDeclId()) {
             String id = v.ID().getText();
             ids.add(id);
-            symbolTable.addSymbol(id, new SymbolInfo(id, type, false));
+            symbolTable.addSymbol(id, new SymbolInfo(id, type, false, 0), 0);
             if (v.NUMCONST() != null) {
                 arraySizes.add(Integer.parseInt(v.NUMCONST().getText()));
             } else {
@@ -63,14 +63,14 @@ public class ASTVisitor extends CminusBaseVisitor<Node> {
             params.add((Param) visitParam(p));
         }
         Statement statement = (Statement) visitStatement(ctx.statement());
-        symbolTable.addSymbol(id, new SymbolInfo(id, returnType, true));
+        symbolTable.addSymbol(id, new SymbolInfo(id, returnType, true, 0), 0);
         return new FunDeclaration(returnType, id, params, statement);
     }
 
     @Override public Node visitParam(CminusParser.ParamContext ctx) {
         VarType type = getVarType(ctx.typeSpecifier());
         String id = ctx.paramId().ID().getText();
-        symbolTable.addSymbol(id, new SymbolInfo(id, type, false));
+        symbolTable.addSymbol(id, new SymbolInfo(id, type, false, 0), 0);
         return new Param(type, id, ctx.paramId().children.size() > 1);
     }
 

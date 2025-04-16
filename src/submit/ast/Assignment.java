@@ -8,6 +8,8 @@ import submit.MIPSResult;
 import submit.RegisterAllocator;
 import submit.SymbolTable;
 
+import java.sql.SQLOutput;
+
 /**
  *
  * @author edwajohn
@@ -41,18 +43,46 @@ public class Assignment implements Expression, Node {
     code.append(String.format("li %s %d\n", reg1, offset));
     code.append(String.format("add %s %s $sp\n",reg1, reg1));
     int value;
-    if (rhs instanceof NumConstant){
-      value = ((NumConstant) rhs).getValue();
-      code.append(String.format("li %s %s\n", reg2, value));
+    if(mutable.getIndex() == -1){
+      if (rhs instanceof NumConstant){
+        value = ((NumConstant) rhs).getValue();
+        code.append(String.format("li %s %s\n", reg2, value));
+      }
+      else if (rhs instanceof BinaryOperator) {
+        regAllocator.clear(reg2);
+        reg2 = rhs.toMIPS(code, data, symbolTable, regAllocator).getRegister();
+      }
+      else if (rhs instanceof UnaryOperator) {
+        regAllocator.clear(reg2);
+        reg2 = rhs.toMIPS(code, data, symbolTable, regAllocator).getRegister();
+      }
     }
-    else if (rhs instanceof BinaryOperator) {
-      regAllocator.clear(reg2);
-      reg2 = rhs.toMIPS(code, data, symbolTable, regAllocator).getRegister();
+    if(mutable.getIndex() != -1 ) {
+      if (rhs instanceof NumConstant) {
+        String reg3 = regAllocator.getAny();
+        code.append(String.format("li %s %d\n", reg2, mutable.getIndex()));
+        code.append(String.format("li %s %d\n", reg3, 4));
+        code.append(String.format("mul %s %s %s\n", reg2, reg2, reg3));
+        code.append(String.format("add %s %s %s\n", reg1, reg1, reg2));
+        code.append(String.format("li %s %d\n", reg3, ((NumConstant) rhs).getValue()));
+        regAllocator.clear(reg3);
+      }
     }
-    else if (rhs instanceof UnaryOperator) {
-      regAllocator.clear(reg2);
-      reg2 = rhs.toMIPS(code, data, symbolTable, regAllocator).getRegister();
+    if (mutable.index instanceof Mutable){
+      if (rhs instanceof Mutable){
+        regAllocator.clear(reg2);
+        reg2 = rhs.toMIPS(code, data, symbolTable, regAllocator).getRegister();
+        String reg3 = regAllocator.getAny();
+        code.append(String.format("li %s %d\n", reg3, 4));
+        code.append(String.format("mul %s %s %s\n", reg2, reg2, reg3));
+        code.append(String.format("add %s %s %s\n", reg1, reg1, reg2));
+        code.append(String.format("li %s %d\n", reg2, symbolTable.findOffset(rhs.toString())));
+        code.append(String.format("add %s %s $sp\n", reg2, reg2));
+        code.append(String.format("lw %s 0(%s)\n", reg1, reg2));
+        regAllocator.clear(reg3);
+      }
     }
+
     code.append(String.format("sw %s %d(%s)\n", reg2, 0, reg1));
     regAllocator.clear(reg2);
     regAllocator.clear(reg1);

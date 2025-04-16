@@ -51,7 +51,7 @@ public class If implements Statement {
     }
     String addr2 = StringLabelGenerator.getLabel();
 
-    symbolTable.addSymbol("0", new SymbolInfo("0", VarType.VOID, false));
+    symbolTable.addSymbol("0", new SymbolInfo("0", VarType.VOID, false, 0), 0);
     trueStatement.toMIPS(code, data, symbolTable, regAllocator);
     code.append(String.format("j %s\n", addr2));
     code.append(String.format("%s:\n", addr));

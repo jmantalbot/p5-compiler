@@ -47,7 +47,7 @@ public class CompoundStatement implements Statement {
       if(!c) System.out.println("Compound block was accessed when it wasn't supposed to be.");
     }
     if(symbolTable.find("return") == null){
-      this.symbolTable.addSymbol("return", new SymbolInfo("return", null, true));
+      this.symbolTable.addSymbol("return", new SymbolInfo("return", null, true, 0), 0);
       this.symbolTable.setOffset("return", 0);
     }
     stackpointer += this.symbolTable.getParent().getSize() - this.symbolTable.getSize();
@@ -59,7 +59,7 @@ public class CompoundStatement implements Statement {
     MIPSResult m = MIPSResult.createVoidResult();
     for (Statement statement : statements) {
       if (statement instanceof CompoundStatement) {
-        this.symbolTable.addSymbol("0", new SymbolInfo("0", VarType.VOID, false));
+        this.symbolTable.addSymbol("0", new SymbolInfo("0", VarType.VOID, false, 0), 0);
       }
 
       m = statement.toMIPS(code, data, this.symbolTable, regAllocator);

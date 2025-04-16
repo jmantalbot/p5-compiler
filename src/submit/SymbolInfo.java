@@ -16,12 +16,15 @@ public class SymbolInfo {
   // In the case of a function, type is the return type
   private final VarType type;
   private final boolean function;
+  private final int arraySize;
 
-  public SymbolInfo(String id, VarType type, boolean function) {
+  public SymbolInfo(String id, VarType type, boolean function, int arraySize) {
     this.id = id;
     this.type = type;
     this.function = function;
+    this.arraySize = arraySize;
   }
+
 
   @Override
   public String toString() {
@@ -37,5 +40,8 @@ public class SymbolInfo {
   }
   public boolean isFunction() {
     return function;
+  }
+  public int arraySize() {
+    return arraySize;
   }
 }

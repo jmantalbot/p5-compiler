@@ -50,8 +50,11 @@ public class VarDeclaration implements Declaration, Node {
   }
   @Override
   public MIPSResult toMIPS(StringBuilder code, StringBuilder data, SymbolTable symbolTable, RegisterAllocator regAllocator){
-    for (String id : ids) {
-      symbolTable.addSymbol(id, new SymbolInfo("id", type, false));
+    for (int i = 0; i < ids.size(); ++i) {
+      String id = ids.get(i);
+      int arraySize = arraySizes.get(i);
+      if (arraySize == -1) arraySize = 1;
+      symbolTable.addSymbol(id, new SymbolInfo("id", type, false, arraySize), arraySize);
     }
     return MIPSResult.createVoidResult();
   }
