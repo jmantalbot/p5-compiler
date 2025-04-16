@@ -8,7 +8,7 @@
 j main
 
 main:
-addi $sp $sp -0
+addi $sp $sp 0
 la $a0 datalabel0
 li $v0 4
 syscall

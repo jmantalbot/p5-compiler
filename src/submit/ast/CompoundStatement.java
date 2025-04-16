@@ -44,16 +44,16 @@ public class CompoundStatement implements Statement {
       stackpointer -= symbolTable.getSize();
     } else {
       boolean c = symbolTable.removeSymbol("0");
-      if(!c) System.out.println("Compound block was accessed when it wasn't supposed to be.");
     }
     if(symbolTable.find("return") == null){
       this.symbolTable.addSymbol("return", new SymbolInfo("return", null, true, 0), 0);
       this.symbolTable.setOffset("return", 0);
     }
+
     stackpointer += this.symbolTable.getParent().getSize() - this.symbolTable.getSize();
 
-
     symbolTable.incrementOffsetAll(-stackpointer);
+
     code.append("addi $sp $sp ").append(-stackpointer).append("\n");
 
     MIPSResult m = MIPSResult.createVoidResult();

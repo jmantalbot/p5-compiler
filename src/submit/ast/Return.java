@@ -43,12 +43,11 @@ public class Return implements Statement {
       regAllocator.clear(reg);
     } else if (expr instanceof Mutable){
       int arraySize = ((Mutable) expr).getIndex();
-      symbolTable.addSymbol(expr.toString(), new SymbolInfo(expr.toString(), VarType.INT, false, arraySize), arraySize);
       code.append(String.format("li %s %d\n", reg2, symbolTable.findOffset(expr.toString())));
       code.append(String.format("add %s %s $sp\n", reg2, reg2));
       code.append(String.format("lw %s 0(%s)\n", reg, reg2));
       symbolTable.setSize(symbolTable.getSize() + symbolTable.getTypeSize(VarType.INT));
-      code.append(String.format("sw %s -%d($sp)\n", reg, symbolTable.getSize()));
+      code.append(String.format("sw %s -%d($sp)\n", reg, symbolTable.getSize() + 4));
       regAllocator.clear(reg);
       regAllocator.clear(reg2);
     } else if (expr instanceof BinaryOperator){

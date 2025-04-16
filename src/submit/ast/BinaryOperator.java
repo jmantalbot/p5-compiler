@@ -44,13 +44,16 @@ public class BinaryOperator implements Expression {
     if (lhs instanceof NumConstant){
       reg1 = lhs.toMIPS(code, data, symbolTable, regAllocator).getRegister();
     }
-
     if (lhs instanceof Mutable){
       reg1 = lhs.toMIPS(code, data, symbolTable, regAllocator).getRegister();
     }
     if (lhs instanceof BinaryOperator){
       reg1 = lhs.toMIPS(code, data, symbolTable, regAllocator).getRegister();
     }
+    if (lhs instanceof ParenExpression){
+      reg1 = lhs.toMIPS(code, data, symbolTable, regAllocator).getRegister();
+    }
+
     if (rhs instanceof NumConstant){
       reg2 = rhs.toMIPS(code, data, symbolTable, regAllocator).getRegister();
     }
