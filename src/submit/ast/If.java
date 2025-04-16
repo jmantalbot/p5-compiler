@@ -4,9 +4,7 @@
  */
 package submit.ast;
 
-import submit.MIPSResult;
-import submit.RegisterAllocator;
-import submit.SymbolTable;
+import submit.*;
 
 /**
  *
@@ -47,11 +45,20 @@ public class If implements Statement {
   }
   @Override
   public MIPSResult toMIPS(StringBuilder code, StringBuilder data, SymbolTable symbolTable, RegisterAllocator regAllocator){
+    String addr = "";
     if (expression instanceof BinaryOperator) {
-      String reg = expression.toMIPS(code, data, symbolTable, regAllocator).getRegister();
+      addr = expression.toMIPS(code, data, symbolTable, regAllocator).getAddress();
     }
+    String addr2 = StringLabelGenerator.getLabel();
 
-
+    symbolTable.addSymbol("0", new SymbolInfo("0", VarType.VOID, false));
+    trueStatement.toMIPS(code, data, symbolTable, regAllocator);
+    code.append(String.format("j %s\n", addr2));
+    code.append(String.format("%s:\n", addr));
+    if (falseStatement != null) {
+      falseStatement.toMIPS(code, data, symbolTable, regAllocator);
+    }
+    code.append(String.format("%s:\n", addr2));
     return MIPSResult.createVoidResult();
   }
 }

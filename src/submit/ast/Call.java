@@ -94,6 +94,7 @@ public class Call implements Expression {
           code.append(String.format("sw %s -%d($sp)\n", reg2, stack));
           regAllocator.clear(reg2);
         } else if (arg instanceof Call){
+          symbolTable.addSymbol("-1", new SymbolInfo(String.valueOf(args.size()), VarType.VOID, false));
           arg.toMIPS(code, data, symbolTable, regAllocator);
         }
       }

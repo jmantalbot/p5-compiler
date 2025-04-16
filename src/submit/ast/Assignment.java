@@ -46,9 +46,8 @@ public class Assignment implements Expression, Node {
       code.append(String.format("li %s %s\n", reg2, value));
     }
     else if (rhs instanceof BinaryOperator) {
-      String reg3 = rhs.toMIPS(code, data, symbolTable, regAllocator).getRegister();
-      code.append(String.format("li %s %s\n", reg3, reg2));
-      regAllocator.clear(reg3);
+      regAllocator.clear(reg2);
+      reg2 = rhs.toMIPS(code, data, symbolTable, regAllocator).getRegister();
     }
     else if (rhs instanceof UnaryOperator) {
       regAllocator.clear(reg2);

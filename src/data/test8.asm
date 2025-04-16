@@ -24,31 +24,31 @@ jr $ra
 add2:
 addi $sp $sp 0
 move $t0 $ra
-sw $t0 -4($sp)
+sw $t0 -16($sp)
 move $t1 $ra
-sw $t1 -4($sp)
+sw $t1 -20($sp)
 li $t3 -4
 add $t3 $t3 $sp
 lw $t2 0($t3)
-sw $t2 -8($sp)
+sw $t2 -24($sp)
 li $t3 -8
 add $t3 $t3 $sp
 lw $t2 0($t3)
-sw $t2 -12($sp)
-add $sp $sp -4
+sw $t2 -28($sp)
+add $sp $sp -20
 jal add
-add $sp $sp 4
-lw $t1 -4($sp)
+add $sp $sp 20
+lw $t1 -20($sp)
 move $ra $t1
-lw $t0 -16($sp)
+lw $t0 -32($sp)
 li $t1 1
-sw $t1 -8($sp)
-add $sp $sp -0
+sw $t1 -20($sp)
+add $sp $sp -12
 jal add
-add $sp $sp 0
-lw $t0 -0($sp)
-move $ra $t0
+add $sp $sp 12
 lw $t0 -12($sp)
+move $ra $t0
+lw $t0 -24($sp)
 jr $ra
 addi $sp $sp 0
 jr $ra
@@ -62,17 +62,17 @@ la $a0 newline
 li $v0 4
 syscall
 move $t0 $ra
-sw $t0 -4($sp)
+sw $t0 -12($sp)
 li $t1 2
-sw $t1 -8($sp)
+sw $t1 -16($sp)
 li $t1 4
-sw $t1 -12($sp)
-add $sp $sp -4
+sw $t1 -20($sp)
+add $sp $sp -12
 jal add2
-add $sp $sp 4
-lw $t0 -4($sp)
+add $sp $sp 12
+lw $t0 -12($sp)
 move $ra $t0
-lw $t0 -16($sp)
+lw $t0 -24($sp)
 move $a0 $t0
 li $v0 1
 syscall
