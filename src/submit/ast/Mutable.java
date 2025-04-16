@@ -49,6 +49,7 @@ public class Mutable implements Expression, Node {
       code.append(String.format("li %s %d\n", reg3, symbolTable.findOffset(id)));
       code.append(String.format("add %s %s $sp\n", reg3, reg3));
       code.append(String.format("lw %s %d(%s)\n", reg2, 0, reg3));
+      regAllocator.clear(reg3);
     }
     if (index != null) {
       if (index instanceof NumConstant){
@@ -61,7 +62,6 @@ public class Mutable implements Expression, Node {
         code.append(String.format("mul %s %s %s\n", reg, reg, reg4));
         code.append(String.format("add %s %s %s\n", reg3, reg3, reg));
         code.append(String.format("lw %s %d(%s)\n", reg2, 0, reg3));
-        regAllocator.clear(reg2);
         regAllocator.clear(reg3);
         regAllocator.clear(reg4);
         regAllocator.clear(reg);
@@ -69,16 +69,15 @@ public class Mutable implements Expression, Node {
       if (index instanceof Mutable){
         String reg4 = regAllocator.getAny();
         String reg5 = regAllocator.getAny();
-        code.append(String.format("li %s %d\n", reg4, symbolTable.findOffset(id)));
+        code.append(String.format("li %s %d\n", reg3, symbolTable.findOffset(id)));
         code.append(String.format("add %s %s $sp\n", reg3, reg3));
         code.append(String.format("li %s %d\n", reg5, symbolTable.findOffset(String.valueOf(index))));
         code.append(String.format("add %s %s $sp\n", reg5, reg5));
         code.append(String.format("lw %s 0(%s)\n", reg4, reg5));
-        code.append(String.format("li %s 4\n", reg4));
-        code.append(String.format("mul %s %s %s\n", reg3, reg3, reg4));
-        code.append(String.format("add %s %s %s\n", reg2, reg2, reg3));
+        code.append(String.format("li %s 4\n", reg5));
+        code.append(String.format("mul %s %s %s\n", reg4, reg4, reg5));
+        code.append(String.format("add %s %s %s\n", reg3, reg3, reg4));
         code.append(String.format("lw %s %d(%s)\n", reg2, 0, reg3));
-        regAllocator.clear(reg2);
         regAllocator.clear(reg3);
         regAllocator.clear(reg4);
         regAllocator.clear(reg5);

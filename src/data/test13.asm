@@ -21,7 +21,7 @@ li $t1 0
 li $t2 4
 mul $t1 $t1 $t2
 add $t0 $t0 $t1
-li $t2 0
+li $t1 0
 sw $t1 0($t0)
 li $t1 -40
 add $t1 $t1 $sp
@@ -42,7 +42,7 @@ li $t1 2
 li $t2 4
 mul $t1 $t1 $t2
 add $t0 $t0 $t1
-li $t2 2
+li $t1 2
 sw $t1 0($t0)
 li $t1 -40
 add $t1 $t1 $sp
@@ -69,18 +69,18 @@ lw $t1 0($t2)
 li $t2 4
 mul $t1 $t1 $t2
 add $t0 $t0 $t1
-li $t1 -44
-add $t1 $t1 $sp
-lw $t0 0($t1)
+li $t2 -44
+add $t2 $t2 $sp
+lw $t1 0($t2)
 sw $t1 0($t0)
-li $t2 -40
+li $t1 -40
 add $t1 $t1 $sp
 li $t3 -44
 add $t3 $t3 $sp
 lw $t2 0($t3)
-li $t2 4
-mul $t1 $t1 $t2
-add $t0 $t0 $t1
+li $t3 4
+mul $t2 $t2 $t3
+add $t1 $t1 $t2
 lw $t0 0($t1)
 move $a0 $t0
 li $v0 1
@@ -109,9 +109,9 @@ lw $t1 0($t2)
 li $t2 4
 mul $t1 $t1 $t2
 add $t0 $t0 $t1
-li $t1 0
-add $t1 $t1 $sp
-lw $t0 0($t1)
+li $t2 0
+add $t2 $t2 $sp
+lw $t1 0($t2)
 sw $t1 0($t0)
 li $t0 0
 add $t0 $t0 $sp
@@ -157,8 +157,8 @@ li $t3 4
 mul $t2 $t2 $t3
 add $t1 $t1 $t2
 lw $t0 0($t1)
-li $t0 6
-mult $t0 $t0
+li $t1 6
+mult $t0 $t1
 mflo $t0
 move $a0 $t0
 li $v0 1

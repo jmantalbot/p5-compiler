@@ -38,6 +38,7 @@ public class Assignment implements Expression, Node {
   public MIPSResult toMIPS(StringBuilder code, StringBuilder data, SymbolTable symbolTable, RegisterAllocator regAllocator) {
     String reg1 = regAllocator.getAny();
     String reg2 = regAllocator.getAny();
+    String reg3 = "";
     int offset = symbolTable.findOffset(mutable.toString());
 
     code.append(String.format("li %s %d\n", reg1, offset));
@@ -59,12 +60,12 @@ public class Assignment implements Expression, Node {
     }
     if(mutable.getIndex() != -1 ) {
       if (rhs instanceof NumConstant) {
-        String reg3 = regAllocator.getAny();
+        reg3 = regAllocator.getAny();
         code.append(String.format("li %s %d\n", reg2, mutable.getIndex()));
         code.append(String.format("li %s %d\n", reg3, 4));
         code.append(String.format("mul %s %s %s\n", reg2, reg2, reg3));
         code.append(String.format("add %s %s %s\n", reg1, reg1, reg2));
-        code.append(String.format("li %s %d\n", reg3, ((NumConstant) rhs).getValue()));
+        code.append(String.format("li %s %d\n", reg2, ((NumConstant) rhs).getValue()));
         regAllocator.clear(reg3);
       }
     }
@@ -72,13 +73,13 @@ public class Assignment implements Expression, Node {
       if (rhs instanceof Mutable){
         regAllocator.clear(reg2);
         reg2 = rhs.toMIPS(code, data, symbolTable, regAllocator).getRegister();
-        String reg3 = regAllocator.getAny();
+        reg3 = regAllocator.getAny();
         code.append(String.format("li %s %d\n", reg3, 4));
         code.append(String.format("mul %s %s %s\n", reg2, reg2, reg3));
         code.append(String.format("add %s %s %s\n", reg1, reg1, reg2));
-        code.append(String.format("li %s %d\n", reg2, symbolTable.findOffset(rhs.toString())));
-        code.append(String.format("add %s %s $sp\n", reg2, reg2));
-        code.append(String.format("lw %s 0(%s)\n", reg1, reg2));
+        code.append(String.format("li %s %d\n", reg3, symbolTable.findOffset(rhs.toString())));
+        code.append(String.format("add %s %s $sp\n", reg3, reg3));
+        code.append(String.format("lw %s 0(%s)\n", reg2, reg3));
         regAllocator.clear(reg3);
       }
     }

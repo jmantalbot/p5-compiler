@@ -57,7 +57,9 @@ public class FunDeclaration implements Declaration, Node {
     for (Param param : params) {
       param.toMIPS(code, data, symbolTable, regAllocator);
     }
+
     statement.toMIPS(code, data, symbolTable, regAllocator);
+
     if (Objects.equals(id, "main")){
       code.append("li $v0 10\nsyscall\n");
     }

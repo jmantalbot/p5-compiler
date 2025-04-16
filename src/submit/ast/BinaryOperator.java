@@ -63,6 +63,9 @@ public class BinaryOperator implements Expression {
     if (rhs instanceof BinaryOperator){
       reg1 = rhs.toMIPS(code, data, symbolTable, regAllocator).getRegister();
     }
+    if (rhs instanceof ParenExpression){
+      reg1 = rhs.toMIPS(code, data, symbolTable, regAllocator).getRegister();
+    }
 
     if (type.equals(BinaryOperatorType.PLUS)){
       code.append(String.format("add %s %s %s\n", reg1, reg1, reg2));
